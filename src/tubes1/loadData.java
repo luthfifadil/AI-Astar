@@ -18,6 +18,7 @@ public class loadData {
     ArrayList<node> closed = new ArrayList<>();
     ArrayList<node> listNode = new ArrayList<>();
     ArrayList<node> suksesor = new ArrayList<>();
+    ArrayList<node> path = new ArrayList<>();
     public loadData(){   
         setMap();
     }
@@ -107,24 +108,41 @@ public class loadData {
         forli.tujuan.add(forrav);
         nextDestination forces = new nextDestination(cesena, 2);
         forli.tujuan.add(forces);
-
+        
+        //Masukin node awal
         open.add(bobbia);
     }   
     public void abintang(){
+        int ketemu = 0 ;
+        int iterasi = 0;
         node BestNode = open.remove(0);
         closed.add(BestNode);
-        while(BestNode.nama != "ravenna"){        
-        for(int i=0; i<BestNode.tujuan.size(); i++){
-            for(int j = 0; j<listNode.size(); j++){
-                if(BestNode.tujuan.get(i).kota2.nama == listNode.get(j).nama){
-                    listNode.get(j).fn = BestNode.fn + BestNode.tujuan.get(i).jarak+BestNode.tujuan.get(i).kota2.heuristic;
-                    System.out.println(listNode.get(j).nama +" "+ listNode.get(j).fn);
-                    if((open.isEmpty() )|| !(open.contains(listNode.get(j)))){
-                        open.add(listNode.get(j));
+        while(!"ravenna".equals(BestNode.nama)){            // selama best node bukan ravenna dia ngulang
+            iterasi += 1;
+            System.out.println("Iterasi ke "+iterasi);
+            System.out.println("Best node = "+BestNode.nama+" fn "+BestNode.fn);
+            System.out.println("[Suksesor] ");
+            for(int i=0; i<BestNode.tujuan.size(); i++){ 
+                for (int j = 0; j<listNode.size(); j++) {
+                    double temp =0;
+                    if(BestNode.tujuan.get(i).kota2.nama == listNode.get(j).nama){ //nyari node yang namanya sama kaya listnode
+                        temp = listNode.get(j).fn;
+                        listNode.get(j).fn = BestNode.fn + BestNode.tujuan.get(i).jarak + BestNode.tujuan.get(i).kota2.heuristic;
+                        //                    System.out.println("temp"+temp);
+                        if(temp > 0 && temp < listNode.get(j).fn){
+                            listNode.get(j).fn = temp;
+                        } else{  System.out.println(listNode.get(j).nama +" "+ listNode.get(j).fn);
+                        if((open.isEmpty() )|| !(open.contains(listNode.get(j)))){
+                            open.add(listNode.get(j));
+                        }}
+//                        }
                     }
                 }
-            }                
-        }
+            }
+        System.out.println("[Open]");
+        for(int i=0; i<open.size(); i++){
+            System.out.println(open.get(i).nama+" "+open.get(i).fn);
+            }
         
         for(int i =1; i<open.size();i++){
             int max = 0;
@@ -132,13 +150,53 @@ public class loadData {
                 max = i;    
             }
             BestNode = open.remove(max);
-            closed.add(BestNode);           
+            closed.add(BestNode);
         }
+        
+//        for (int i = closed.size()-1; i<0 ; i--){
+//            int max2 = closed.size() ;
+//            if (closed.get(max2).fn < closed.get(i).fn){
+//                max2 = i;    
+//            }
+//            node PathNode = closed.get(max2);
+//            path.add(PathNode);
+//            System.out.println("[Path]");
+//            System.out.println(path.get(i).nama+" "+path.get(i).fn);
+//        }
             System.out.println("[Closed]");
-            for(int i =0 ; i<closed.size(); i++){
+            for(int i =0 ; i<closed.size()-1; i++){
                 System.out.println(closed.get(i).nama+" "+closed.get(i).fn);
             }
             System.out.println("--------------");
+        }
     }
-}
+    
+    public void pathHasil(){
+        ArrayList<nextDestination> haha = new ArrayList<>();
+        int xz = 0;
+        int max = 0;
+        int pathcount = 0;
+        path.add(closed.get(xz));
+        for(int i = 1; i < closed.size(); i++){
+            for(int j = 0; j<closed.get(max).tujuan.size(); j++){  
+                if(path.get(pathcount).tujuan.get(j).kota2.nama == closed.get(i).nama){
+                    path.add(closed.get(i));                  
+                    pathcount += 1;
+                    break;
+                }
+                else ;
+            }
+            max = i ;
+        }
+        System.out.println("Finish !");
+        System.out.println("------------------------------");
+        
+        System.out.println("[Path]");
+        for (int i = 0; i<path.size(); i++){
+            System.out.print(path.get(i).nama+" ");
+        }
+        System.out.println("");
+        System.out.println("[Cost] = "+path.get(path.size()-1).fn);
+        
+    }
 }

@@ -19,6 +19,7 @@ public class Tubes1 {
         loadData ld = new loadData();
 //        ld.setMap();
         ld.abintang();
+        ld.pathHasil();
         
     }
     

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class node {
     String nama;
     ArrayList<nextDestination> tujuan= new ArrayList<>();
-    String tempat;
     double heuristic;
     double fn = 0;
     
@@ -32,9 +31,6 @@ public class node {
         return tujuan;
     }
 
-    public String getTempat() {
-        return tempat;
-    }
 
     public double getHeuristic() {
         return heuristic;
