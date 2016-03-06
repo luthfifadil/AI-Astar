@@ -49,6 +49,7 @@ public class loadData {
         node bobbia = new node("boobia",10.5);
         listNode.add(bobbia);
         bobbia.fn = bobbia.heuristic;
+        bobbia.gn = 0;
         
         //set setiap jarak antar kota
         //set next bobbia
@@ -117,27 +118,40 @@ public class loadData {
         int iterasi = 0;
         node BestNode = open.remove(0);
         closed.add(BestNode);
+        System.out.println("Path Awal = "+ BestNode.nama);
+        System.out.println("-----------------------------------------");
         while(!"ravenna".equals(BestNode.nama)){            // selama best node bukan ravenna dia ngulang
             iterasi += 1;
-            System.out.println("Iterasi ke "+iterasi);
-            System.out.println("Best node = "+BestNode.nama+" fn "+BestNode.fn);
+            System.out.println("ITERASI KE-"+iterasi);
+            System.out.println("Best node : "+BestNode.nama+" fn = "+BestNode.fn);
             System.out.println("[Suksesor] ");
-            for(int i=0; i<BestNode.tujuan.size(); i++){ 
+            for(int i=0; i<BestNode.tujuan.size(); i++){
+//                BestNode.gn = BestNode.tujuan.get(i).jarak;
+                double temp2 = 0;
                 for (int j = 0; j<listNode.size(); j++) {
                     double temp =0;
+                    
                     if(BestNode.tujuan.get(i).kota2.nama == listNode.get(j).nama){ //nyari node yang namanya sama kaya listnode
                         temp = listNode.get(j).fn;
-                        listNode.get(j).fn = BestNode.fn + BestNode.tujuan.get(i).jarak + BestNode.tujuan.get(i).kota2.heuristic;
-                        //                    System.out.println("temp"+temp);
+                        listNode.get(j).fn = BestNode.gn +BestNode.tujuan.get(i).jarak+ BestNode.tujuan.get(i).kota2.heuristic;
+                        listNode.get(j).gn = BestNode.gn + BestNode.tujuan.get(i).jarak;
+//                        temp2 += BestNode.tujuan.get(i).jarak;
+//                        System.out.println("temp2 "+temp2);
+//                        System.out.println("--"+listNode.get(j).nama+listNode.get(j).gn+" heu "+listNode.get(j).heuristic);
+//                        System.out.println("--best node gn "+BestNode.nama+BestNode.gn+" "+BestNode.fn);
                         if(temp > 0 && temp < listNode.get(j).fn){
                             listNode.get(j).fn = temp;
+                            
                         } else{  System.out.println(listNode.get(j).nama +" "+ listNode.get(j).fn);
-                        if((open.isEmpty() )|| !(open.contains(listNode.get(j)))){
+                        if((open.isEmpty() )|| !(open.contains(listNode.get(j)))){   
                             open.add(listNode.get(j));
                         }}
 //                        }
                     }
+                    
+                    
                 }
+//                System.out.println("Best Node "+BestNode.nama+BestNode.gn);
             }
         System.out.println("[Open]");
         for(int i=0; i<open.size(); i++){

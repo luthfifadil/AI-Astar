@@ -16,6 +16,7 @@ public class node {
     ArrayList<nextDestination> tujuan= new ArrayList<>();
     double heuristic;
     double fn = 0;
+    double gn = 0;
     
     public node(String nama,double heuristic){
         this.nama = nama;

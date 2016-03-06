@@ -15,11 +15,19 @@ public class Tubes1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        long startime = System.currentTimeMillis();
         loadData ld = new loadData();
 //        ld.setMap();
         ld.abintang();
         ld.pathHasil();
+        long  endtime = System.currentTimeMillis();
+        long elapsedtime = endtime - startime;
+        Runtime runtime = Runtime.getRuntime();
+        System.out.println("---------------------------");
+        runtime.gc();
+        long memory = runtime.totalMemory()-runtime.freeMemory();
+        System.out.println("Used Memory is = "+memory+" bytes");
+        System.out.println("Time Running = "+ elapsedtime + "ms");
         
     }
     
